@@ -1,6 +1,5 @@
 # Architecture Strategy — Project Chimera
-Date: February 4  
-Author: FDE Trainee (Strategist)
+Date: February 4 
 
 This document defines the architectural strategy for Project Chimera’s agentic infrastructure.  
 It focuses on agent patterns, governance, HITL placement, and data-layer decisions required to support an autonomous influencer network at scale.
@@ -30,6 +29,67 @@ Core components:
 - MCP Servers (integration boundary)
 - Persistent Data Layer
 - Human Review Interface (HITL)
+
+```mermaid
+flowchart TB
+    subgraph ControlPlane["Central Orchestrator (Control Plane)"]
+        Orchestrator[("Orchestrator")]
+        Dashboard[Dashboard]
+        Orchestrator --> Dashboard
+    end
+
+    subgraph AgentSwarm["Agent Swarm Runtime"]
+        Planner[Planner\nStrategist]
+        WorkerPool[Worker Pool\nExecutors]
+        Judge[Judge\nGatekeeper]
+
+        Planner -->|"Task DAG"| WorkerPool
+        WorkerPool -->|"Results"| Judge
+        Judge -->|"Replan"| Planner
+        Judge -->|"Commit"| Planner
+    end
+
+    subgraph HITL["Human-in-the-Loop"]
+        ReviewUI[Human Review Interface]
+    end
+
+    subgraph MCP["MCP Servers (Integration Boundary)"]
+        Social[MCP: Social Platforms]
+        Vector[MCP: Vector DB]
+        Media[MCP: Image/Video Gen]
+        Commerce[MCP: AgentKit]
+        News[MCP: News Ingestion]
+    end
+
+    subgraph DataLayer["Persistent Data Layer"]
+        Postgres[(PostgreSQL)]
+        Weaviate[(Weaviate)]
+        Redis[(Redis)]
+    end
+
+    subgraph External["External Systems"]
+        SocialPlatforms[Twitter / Instagram / TikTok]
+        Blockchains[Base / Ethereum / Solana]
+    end
+
+    Orchestrator --> Planner
+    Orchestrator --> Judge
+    Judge -->|"Escalate"| ReviewUI
+    ReviewUI --> Judge
+
+    Planner --> MCP
+    WorkerPool --> MCP
+    Judge --> MCP
+
+    MCP --> SocialPlatforms
+    MCP --> Blockchains
+
+    Planner --> Postgres
+    Judge --> Postgres
+    WorkerPool --> Redis
+    MCP --> Weaviate
+    MCP --> Redis
+```
 
 ---
 
