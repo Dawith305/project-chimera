@@ -1,0 +1,22 @@
+# Project Chimera — CI Pipeline
+# Traceability: Task 3.3
+# Runs make test (Docker) on every push
+
+name: CI
+
+on:
+  push:
+    branches: [main, feature/**]
+  pull_request:
+    branches: [main, feature/**]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run tests (Docker)
+        run: make test

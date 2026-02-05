@@ -12,15 +12,15 @@ WORKDIR /app
 # Dependencies first (better layer caching)
 COPY pyproject.toml uv.lock ./
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
-RUN uv sync --frozen
+RUN uv sync --frozen --extra dev
 
 # Application source
 COPY skills/ skills/
 COPY tests/ tests/
 COPY specs/ specs/
+COPY scripts/ scripts/
 
-# Ensure Python can find project modules
 ENV PYTHONPATH=/app
 
-# Default: run tests
-CMD ["uv", "run", "pytest", "tests/", "-v", "--tb=short"]
+# Governance pipeline: lint → security → test
+CMD ["bash", "scripts/ci.sh"]

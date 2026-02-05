@@ -1,29 +1,39 @@
 # Project Chimera — Standardised Commands
-# Traceability: Task 3.2
+# Traceability: Task 3.2, Governance Pipeline
 # Eliminates "It works on my machine" via Docker and consistent tooling
 
-.PHONY: setup test test-local spec-check docker-build docker-test
+.PHONY: setup test test-local lint security spec-check ci docker-build docker-test
 
 # Install dependencies (local dev)
 setup:
-	uv sync
+	uv sync --extra dev
 
-# Run tests in Docker (consistent environment, primary)
+# Full CI pipeline in Docker (lint + security + test)
 test: docker-test
+ci: docker-test
 
 # Run tests locally (when Docker unavailable)
 test-local:
 	uv run pytest tests/ -v --tb=short
+
+# Lint (local)
+lint:
+	uv run ruff check . --output-format=concise
+	uv run ruff format --check .
+
+# Security audit (local)
+security:
+	uv run pip-audit
 
 # Verify code aligns with specs
 spec-check:
 	@chmod +x scripts/spec-check.sh 2>/dev/null || true
 	@./scripts/spec-check.sh
 
-# Build Docker image for tests
+# Build Docker image
 docker-build:
 	docker build -t project-chimera:test .
 
-# Run tests inside Docker container
+# Run full pipeline in Docker (lint, security, test)
 docker-test: docker-build
 	docker run --rm project-chimera:test

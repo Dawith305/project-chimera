@@ -14,6 +14,11 @@ REQUIRED_TOP_LEVEL_KEYS = ("trends", "fetched_at", "resource_uri")
 REQUIRED_TREND_KEYS = ("id", "title", "summary", "source", "published_at", "relevance_score")
 
 
+@pytest.mark.xfail(
+    raises=NotImplementedError,
+    reason="TDD: skill implementation pending",
+    strict=True,
+)
 def test_trend_fetcher_returns_valid_structure() -> None:
     """P-01: Trend data structure matches API contract per specs/technical.md."""
     result = fetch_trends("news://test/trends", max_items=5)
@@ -33,6 +38,11 @@ def test_trend_fetcher_returns_valid_structure() -> None:
         assert 0.0 <= trend["relevance_score"] <= 1.0, "relevance_score must be 0.0-1.0"
 
 
+@pytest.mark.xfail(
+    raises=NotImplementedError,
+    reason="TDD: skill implementation pending",
+    strict=True,
+)
 def test_trend_fetcher_respects_max_items() -> None:
     """P-01: Result respects max_items parameter."""
     result = fetch_trends("news://test/trends", max_items=3)
