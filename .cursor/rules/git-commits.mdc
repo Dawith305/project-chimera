@@ -1,0 +1,20 @@
+---
+description: Git commit message standards - no AI attribution
+alwaysApply: true
+---
+
+# Git Commit Standards
+
+When creating or amending commits:
+
+- **Never** add `Co-authored-by:`, `Signed-off-by:`, or any AI/agent attribution to commit messages
+- Use only the user's intended commit message body
+- Keep commit messages concise and conventional (e.g. `feat:`, `fix:`, `docs:`)
+- Do not append extra lines, trailers, or footers unless explicitly requested by the user
+
+## Cursor Co-authored-by Injection
+
+Cursor IDE automatically appends `Co-authored-by: Cursor <cursoragent@cursor.com>` to commits made from its integrated terminal. There is no built-in setting to disable this. To remove it or create clean commits:
+
+- Run `git commit` or `git commit --amend` from an **external terminal** (Terminal.app, iTerm) outside of Cursor
+- Or use: `git commit --amend -m "your message"` from an external terminal to fix existing commits
