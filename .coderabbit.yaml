@@ -1,0 +1,44 @@
+# Project Chimera — AI Review Policy
+# Traceability: Task 3.3
+# Instructs reviewer to check for Spec Alignment and Security Vulnerabilities
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: true
+
+# Knowledge base: specs are the source of truth
+knowledge:
+  - path: specs/
+    description: |
+      Project Chimera specifications — source of truth for all implementation.
+      specs/_meta.md: Vision, constraints, Prime Directive.
+      specs/functional.md: User stories (P-01, W-02, J-01, etc.).
+      specs/technical.md: API contracts, database schema, MCP tool definitions.
+  - path: .cursor/rules/
+    description: Project rules — coding standards, git conventions, spec-driven development.
+
+# Review instructions: Spec Alignment + Security
+review_instructions: |
+  When reviewing code changes for Project Chimera:
+
+  1. **Spec Alignment**: Verify that implementation aligns with specs/.
+     - Code must trace back to a spec (specs/functional.md, specs/technical.md).
+     - New features require spec coverage before implementation.
+     - Test files must reference spec IDs in docstrings (e.g. P-01, W-02).
+     - Flag changes that lack spec traceability or contradict specs.
+
+  2. **Security Vulnerabilities**: Check for common security issues:
+     - Hardcoded secrets, API keys, or credentials.
+     - SQL/command injection risks.
+     - Unsafe deserialization or eval() usage.
+     - Missing input validation.
+     - Insecure dependencies (check pyproject.toml, requirements).
+
+  3. **Project Conventions**: Enforce .cursor/rules/ (coding-standards, project-chimera, git-commits).
