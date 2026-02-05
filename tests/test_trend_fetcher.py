@@ -6,8 +6,6 @@ Challenge: Task 3.1 — These tests SHOULD fail. Defines the empty slot the AI m
 
 from __future__ import annotations
 
-import pytest
-
 from skills.skill_fetch_trends import fetch_trends
 
 REQUIRED_TOP_LEVEL_KEYS = ("trends", "fetched_at", "resource_uri")

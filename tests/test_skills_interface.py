@@ -37,9 +37,7 @@ from skills.skill_transcribe_audio import transcribe_audio
         ),
     ],
 )
-def test_skill_accepts_required_parameters(
-    func: object, expected_params: list[str]
-) -> None:
+def test_skill_accepts_required_parameters(func: object, expected_params: list[str]) -> None:
     """Each skill must accept the parameters defined in skills/README.md."""
     sig = inspect.signature(func)
     actual_params = list(sig.parameters.keys())
