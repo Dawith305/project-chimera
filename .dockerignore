@@ -1,0 +1,10 @@
+# Exclude from Docker build context
+.venv/
+__pycache__/
+.git/
+.gitignore
+.pytest_cache/
+*.pyc
+.idea/
+*.md
+!REPORT.md
