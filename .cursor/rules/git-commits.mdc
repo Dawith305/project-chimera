@@ -1,20 +1,39 @@
 ---
-description: Git commit message standards - no AI attribution
+description: Git commit standards - AI must NOT run git commit (Cursor injects Co-authored-by)
 alwaysApply: true
 ---
 
 # Git Commit Standards
 
-When creating or amending commits:
+## CRITICAL: Do Not Run git commit or git commit --amend
 
-- **Never** add `Co-authored-by:`, `Signed-off-by:`, or any AI/agent attribution to commit messages
-- Use only the user's intended commit message body
-- Keep commit messages concise and conventional (e.g. `feat:`, `fix:`, `docs:`)
-- Do not append extra lines, trailers, or footers unless explicitly requested by the user
+**The AI agent must NEVER run `git commit` or `git commit --amend` from the terminal.**
 
-## Cursor Co-authored-by Injection
+Cursor IDE automatically injects `Co-authored-by: Cursor <cursoragent@cursor.com>` into every commit made from its integrated terminal. There is no way to prevent this from within Cursor. The AI cannot avoid it by "not adding" it — Cursor adds it when the command executes.
 
-Cursor IDE automatically appends `Co-authored-by: Cursor <cursoragent@cursor.com>` to commits made from its integrated terminal. There is no built-in setting to disable this. To remove it or create clean commits:
+### Required Workflow
 
-- Run `git commit` or `git commit --amend` from an **external terminal** (Terminal.app, iTerm) outside of Cursor
-- Or use: `git commit --amend -m "your message"` from an external terminal to fix existing commits
+1. **AI may:** Run `git add`, `git status`, `git diff`, `git branch`, `git checkout`, `git merge`, `git pull`, `git push` (non-commit operations)
+2. **AI must NOT:** Run `git commit` or `git commit --amend`
+3. **AI must:** When a commit is needed, stage the files with `git add`, then provide the user with the **exact commands** to run from an **external terminal** (Terminal.app, iTerm — NOT Cursor's integrated terminal)
+
+### Example
+
+```
+# AI has staged files. AI outputs to user:
+
+"Files are staged. Run these commands from Terminal.app or iTerm (outside Cursor):
+
+git commit -m \"feat(specs): Task 2.2 - Context Engineering
+
+- .cursor/rules/project-chimera.mdc: Project context, Prime Directive, Traceability\"
+
+git push origin feature/task-2.2-context-engineering
+"
+```
+
+### Commit Message Rules (when providing commands to user)
+
+- Never include `Co-authored-by:`, `Signed-off-by:`, or AI attribution
+- Use conventional format: `feat:`, `fix:`, `docs:`, etc.
+- Keep messages concise

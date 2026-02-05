@@ -1,0 +1,56 @@
+---
+description: Project Chimera — The Brain (Context Engineering for IDE Agent)
+alwaysApply: true
+---
+
+# Project Chimera — Agent Co-Pilot Context
+
+## Project Context
+
+**This is Project Chimera, an autonomous influencer system.** It is a fleet of goal-directed digital entities that research trends, generate content, and manage engagement without continuous human intervention. The system uses a **Planner → Worker → Judge** hierarchical swarm architecture, MCP-first integration, and governance-over-autonomy principles.
+
+---
+
+## The Prime Directive
+
+**NEVER generate code without checking specs/ first.**
+
+Before writing any implementation:
+
+1. Read the relevant spec: `specs/_meta.md`, `specs/functional.md`, `specs/technical.md`
+2. Align your implementation with the API contracts, schemas, and user stories defined there
+3. If a spec does not exist for what you are building, create or extend the spec before coding
+4. Ambiguity is the enemy of AI — vague specs lead to hallucination
+
+---
+
+## Traceability
+
+**Explain your plan before writing code.**
+
+When implementing features:
+
+1. State which spec(s) you are implementing (e.g. "Per specs/functional.md P-01, PL-01...")
+2. Summarize your approach in 1–3 sentences before making edits
+3. Link code changes to specific requirements or user story IDs when possible
+4. Commit messages should reference specs or task IDs where relevant
+
+---
+
+## Key Reference Paths
+
+| Path | Purpose |
+|------|---------|
+| `specs/_meta.md` | Vision, constraints, architectural principles |
+| `specs/functional.md` | User stories (Planner, Worker, Judge) |
+| `specs/technical.md` | API contracts, database ERD, MCP tool definitions |
+| `specs/openclaw_integration.md` | OpenClaw availability/status plan |
+| `research/architecture_strategy.md` | Architectural rationale and diagrams |
+
+---
+
+## Architectural Reminders
+
+- **MCP-first:** Agents never call external APIs directly; all integration via MCP servers
+- **Judge as gatekeeper:** All state-changing actions pass through the Judge
+- **Spec-driven:** No implementation without a ratified specification
