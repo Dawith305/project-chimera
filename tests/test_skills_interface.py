@@ -45,6 +45,7 @@ def test_skill_accepts_required_parameters(func: object, expected_params: list[s
         assert param in actual_params, f"{func.__name__} must accept '{param}'"
 
 
+@pytest.mark.xfail(raises=NotImplementedError, reason="TDD: skill implementation pending", strict=True)
 def test_fetch_trends_returns_contract_shape() -> None:
     """skill_fetch_trends must return structure per skills/README.md §3.1."""
     result = fetch_trends("news://ethiopia/fashion/trends", max_items=1)
@@ -54,6 +55,7 @@ def test_fetch_trends_returns_contract_shape() -> None:
         assert "relevance_score" in trend and 0.0 <= trend["relevance_score"] <= 1.0
 
 
+@pytest.mark.xfail(raises=NotImplementedError, reason="TDD: skill implementation pending", strict=True)
 def test_transcribe_audio_returns_contract_shape() -> None:
     """skill_transcribe_audio must return structure per skills/README.md §3.2."""
     result = transcribe_audio("https://example.com/audio.mp3")
@@ -61,6 +63,7 @@ def test_transcribe_audio_returns_contract_shape() -> None:
     assert 0.0 <= result["confidence"] <= 1.0
 
 
+@pytest.mark.xfail(raises=NotImplementedError, reason="TDD: skill implementation pending", strict=True)
 def test_download_youtube_returns_contract_shape() -> None:
     """skill_download_youtube must return structure per skills/README.md §3.3."""
     result = download_youtube("https://youtube.com/watch?v=test")
@@ -68,6 +71,7 @@ def test_download_youtube_returns_contract_shape() -> None:
     assert "title" in result["metadata"]
 
 
+@pytest.mark.xfail(raises=NotImplementedError, reason="TDD: skill implementation pending", strict=True)
 def test_generate_content_returns_contract_shape() -> None:
     """skill_generate_content must return structure per skills/README.md §3.4."""
     context = {"goal_description": "Test", "persona_constraints": []}
