@@ -1,0 +1,64 @@
+---
+description: Python coding standards and testing practices for Project Chimera
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# Coding Standards — Project Chimera
+
+## Python Style
+
+- **PEP 8** with line length 100. Use `ruff` or `black` for formatting.
+- **Naming:** `snake_case` (functions, variables), `PascalCase` (classes), `UPPER_SNAKE` (constants).
+- **Imports:** stdlib → third-party → local. Use `from __future__ import annotations` for forward refs.
+
+## Type Hints & Schemas
+
+- **Type hints required** on all public function signatures.
+- **Pydantic** for data contracts (Task, Result, API payloads). Align with `specs/technical.md` §1.1, §1.2.
+- Use `TypedDict` or Pydantic for JSON-like structures.
+
+```python
+# Good
+def fetch_trends(resource_uri: str, max_items: int = 20) -> list[TrendItem]: ...
+
+# Schemas from specs/technical.md
+class AgentTask(BaseModel):
+    task_id: str
+    task_type: Literal["generate_content", "reply_comment", "fetch_trends"]
+    ...
+```
+
+## Error Handling
+
+- **No bare `except`.** Catch specific exceptions.
+- **Custom exceptions** for domain errors (e.g. `SkillExecutionError`, `ValidationError`).
+- **Log** before re-raise when wrapping: `logger.exception("..."); raise`.
+
+## Testing (pytest)
+
+- **Location:** `tests/` at project root. One file per module under test.
+- **Naming:** `test_<module>_<behavior>.py` or `test_<spec_id>_<description>.py`.
+- **Docstrings:** Reference spec IDs (e.g. `"""P-01: Trend data structure matches API contract."""`).
+- **Fixtures** for shared setup; use `pytest.mark.parametrize` for variations.
+- **Assertions:** Prefer `assert x == expected` with clear failure messages.
+
+```python
+def test_trend_fetcher_returns_valid_structure():
+    """specs/technical.md: Trend output matches contract."""
+    result = fetch_trends("news://test/trends", max_items=5)
+    assert "trends" in result
+    assert all("relevance_score" in t for t in result["trends"])
+```
+
+## Project Layout
+
+- `skills/` — Skill implementations (one package per skill).
+- `tests/` — All tests. Mirror source structure when helpful.
+- `planner/`, `worker/`, `judge/` — Future swarm services.
+- No business logic in `__main__` or top-level scripts; use entrypoints.
+
+## Spec Traceability
+
+- Link code to specs in docstrings: `# specs/functional.md P-01`, `# specs/technical.md §1.1`.
+- Test names and docstrings should reference the requirement they validate.
